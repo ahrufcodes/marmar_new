@@ -2,7 +2,6 @@ import streamlit as st
 import openai
 from dotenv import load_dotenv
 import os
-import gspread
 
 # Using the OPENAI_API_KEY environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
