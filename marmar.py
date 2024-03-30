@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 from dotenv import load_dotenv
 import os
+import gspread
 
 # Using the OPENAI_API_KEY environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -30,6 +31,7 @@ custom_css = """
 st.markdown(custom_css, unsafe_allow_html=True)
 
 
+
 # Streamlit app interface 
 st.title('Marmar: Empowering you with the knowledge and tools to safely manage your medications.')
 st.write('Welcome to Marmar. Check potential drug interactions and get tailored advice. Please provide the details below to get started.')
@@ -40,17 +42,19 @@ health_history = st.text_area('Enter your health history or describe any ailment
 
 
 # Optional fields for personalized advice
+options = ['Male', 'Female']
+gender = st.selectbox('Enter your gender:', options)
 age = st.text_input('Enter your age (Optional):', '')
 weight = st.text_input('Enter your weight in kg (Optional):', '')
 height = st.text_input('Enter your height in cm (Optional):', '')
 
-# Reminder for users to consult with a healthcare provider for professional advice
-text_reduced_opacity = "We appreciate you choosing MarMar for your medication management needs. Please note, MarMar is designed to support, not substitute, the guidance of healthcare professionals. For advice specific to your health concerns, make sure to consult with your doctor or healthcare provider."
-#custom opacity for reducing the text opacity
-st.markdown(f'<span style="opacity: 0.5;">{text_reduced_opacity}</span>', unsafe_allow_html=True)
+# # Reminder for users to consult with a healthcare provider for professional advice
+# text_reduced_opacity = "We appreciate you choosing MarMar for your medication management needs. Please note, MarMar is designed to support, not substitute, the guidance of healthcare professionals. For advice specific to your health concerns, make sure to consult with your doctor or healthcare provider."
+# #custom opacity for reducing the text opacity
+# st.markdown(f'<span style="opacity: 0.5;">{text_reduced_opacity}</span>', unsafe_allow_html=True)
 
 # Function to check drug interactions
-def check_drug_interactions(medications, health_history, age="", weight="", height=""):
+def check_drug_interactions(medications, health_history, gender="", age="", weight="", height=""):
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -66,10 +70,10 @@ def check_drug_interactions(medications, health_history, age="", weight="", heig
                                f"Focus on any increased risks, specific side effects, and the mechanism by which"
                                f"these interactions might occur, also considering the health history. Include any relevant studies or findings that have implicated these drugs in such conditions. "
                                f"Ensure the explanation is comprehensive, covering the pharmacological aspects and clinical implications for patients. "
-                               f"Then, based on age: {age}, weight: {weight}, and height: {height}, health history{health_history}, offer tailored advice."
+                               f"Then, based on gender: {gender}, age: {age}, weight: {weight}, height: {height}, and health history{health_history}, offer tailored advice."
                 }
             ],
-            max_tokens=500,  # Limiting the output to 500 tokens
+            max_tokens=1000,  # Limiting the output to 1000 tokens
         
         )
         # Response will be structured appropriately(it's just  to get a cleaned up response)
@@ -80,7 +84,7 @@ def check_drug_interactions(medications, health_history, age="", weight="", heig
 # Button to initiate the drug interaction check
 if st.button('Check Interactions'):
     if medications and health_history:
-        response = check_drug_interactions(medications, health_history, age, weight, height)
+        response = check_drug_interactions(medications, gender, health_history, age, weight, height)
         
         #split the response 
         parts = response.split('\n', 1)  # Splitting by newline, adjust if AI uses a different format
@@ -126,3 +130,4 @@ text-align: center;
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
+st.markdown("*We appreciate you choosing MarMar for your medication management needs. Please note, MarMar is designed to support, not substitute, the guidance of healthcare professionals. For advice specific to your health concerns, make sure to consult with your doctor or healthcare provider.*")
