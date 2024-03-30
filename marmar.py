@@ -42,7 +42,7 @@ health_history = st.text_area('Enter your health history or describe any ailment
 
 # Optional fields for personalized advice
 options = ['Male', 'Female']
-gender = st.selectbox('Enter your gender:', options)
+gender = st.selectbox('Choose your gender:', options)
 age = st.text_input('Enter your age (Optional):', '')
 weight = st.text_input('Enter your weight in kg (Optional):', '')
 height = st.text_input('Enter your height in cm (Optional):', '')
