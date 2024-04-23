@@ -6,6 +6,7 @@ import os
 # Using the OPENAI_API_KEY environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+
 # UI configurations
 st.set_page_config(page_title="Marmar", page_icon="💊")
 custom_css = """
@@ -29,7 +30,8 @@ custom_css = """
 # Inject custom CSS with markdown
 st.markdown(custom_css, unsafe_allow_html=True)
 
-
+# Display an Image Banner
+st.image('img/banner.png', use_column_width=True)
 
 # Streamlit app interface 
 st.title('Marmar: Empowering you with the knowledge and tools to safely manage your medications.')
@@ -82,8 +84,10 @@ def check_drug_interactions(medications, health_history, gender="", age="", weig
 
 # Button to initiate the drug interaction check
 if st.button('Check Interactions'):
+    warning_users = "<p style='color: #BABABA; opacity:.7;'>  We appreciate you choosing MarMar for your medication management needs. Please note, MarMar is designed to support, not substitute, the guidance of healthcare professionals. For advice specific to your health concerns, make sure to consult with your doctor or healthcare provider.'  </p>" 
+    st.markdown(warning_users, unsafe_allow_html=True)
     if medications and health_history:
-        response = check_drug_interactions(medications, gender, health_history, age, weight, height)
+        response = check_drug_interactions(medications, health_history, gender, age, weight, height)
         
         #split the response 
         parts = response.split('\n', 1)  # Splitting by newline, adjust if AI uses a different format
@@ -129,4 +133,3 @@ text-align: center;
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
-st.markdown("*We appreciate you choosing MarMar for your medication management needs. Please note, MarMar is designed to support, not substitute, the guidance of healthcare professionals. For advice specific to your health concerns, make sure to consult with your doctor or healthcare provider.*")
