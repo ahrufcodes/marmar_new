@@ -129,7 +129,7 @@ text-align: center;
 }
 </style>
 <div class="footer">
-<p>  <a>Thank for using MARMAR for safer medication management!</a> <a style='display: block; text-align: center;' href="https://ahruf.notion.site/About-Marmar-6e1c9dc286e84884bd7a62e6ec76cca4?pvs=4" target="_blank">About marmar</a></p>
+<p>  <a>Thank you for using MARMAR for safer medication management!</a> <a style='display: block; text-align: center;' href="https://ahruf.notion.site/About-Marmar-6e1c9dc286e84884bd7a62e6ec76cca4?pvs=4" target="_blank">About marmar</a></p>
 </div>
 """
 st.markdown(footer,unsafe_allow_html=True)
